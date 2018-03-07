@@ -1,8 +1,14 @@
+# encoding: utf-8
 import requests
 from bs4 import BeautifulSoup
 from time import strftime, localtime, sleep
 from datetime import datetime, date
 import pytz
+
+# Line bot
+from linebot import LineBotApi
+from linebot.models import TextSendMessage
+from linebot.exceptions import LineBotApiError
 
 # Import smtplib for the actual sending function
 import smtplib
@@ -12,6 +18,12 @@ from email.mime.text import MIMEText
 
 tpe = pytz.timezone('Asia/Taipei')
 goGetColor = False
+
+line_bot_api = LineBotApi('Your Channel Access Token') #Your Channel Access Token
+
+def push_message(pushtext):
+	for push_id in ["id1","id2"]:
+		line_bot_api.push_message(push_id, TextSendMessage(text=pushtext))
 
 def findColor(colorList, colorIndex):
 	#判定如果沒有抓到顏色（如空白）則回傳空白文字，避免錯誤。
@@ -44,8 +56,8 @@ def getColorToday():
 
 def sendEmail(contentText, subject):
 #	print('%s，吉色：%s，忌色：%s' % (dateList, good, bad))
-	me = 'htest@gmail.com'
-	recipients = ['htest@gmail.com', '123test@gmail.com']
+	me = 'test1223@gmail.com'
+	recipients = ['test1223@gmail.com', 'test12564@gmail.com']
 	msg = MIMEText(contentText)
 	msg['Subject'] = subject
 	msg['From'] = me
@@ -64,27 +76,30 @@ def sendEmail(contentText, subject):
 	s.quit()
 
 while 1:
-    utcNow = datetime.utcnow()
-    now = tpe.fromutc(utcNow).strftime("%H:%M")
+	utcNow = datetime.utcnow()
+	now = tpe.fromutc(utcNow).strftime("%H:%M")
 
-    if now == "00:00":
-        print ('Crawler starting...')
-        goGetColor = True
-    elif now == "00:30" and goGetColor == True:
-        print('Crawler stop!')
-        sendEmail('對不起主人，我失敗了......', '顏色抓取失敗：%s' % now)
-        goGetColor = False
+	if now < "00:30":
+		print ('Crawler starting...')
+		goGetColor = True
+	elif now == "00:30" and goGetColor == True:
+		print('Crawler stop!')
+		sendEmail('對不起主人，我失敗了......', '顏色抓取失敗：%s' % now)
+		push_message('對不起主人，我失敗了......\n顏色抓取失敗：%s' % now)
+		goGetColor = False
 
-    if goGetColor == True:
-        todayTime = str(int(strftime("%Y"))-1911) +'年'+ tpe.fromutc(utcNow).strftime('%m') + '月' + tpe.fromutc(utcNow).strftime('%d') + '日'
-	#	print (str(int(strftime("%Y"))-1911)+strftime("年%m月%d日", localtime()))
-        #print(todayTime)
-        getdate, gColor, bColor = getColorToday()
-        if getdate == todayTime:
-            print ('update:%s', todayTime)
-            sendEmail('%s顏色建議，%s忌%s' % (getdate,gColor,bColor), '%s，吉色：%s，忌色：%s' % (getdate, gColor, bColor))
-            goGetColor = False
-            print('Cralwer stop!')
-        break
-    else:
-        sleep(60)
+	if goGetColor == True:
+		todayTime = str(int(strftime("%Y"))-1911) +'年'+ tpe.fromutc(utcNow).strftime('%m') + '月' + tpe.fromutc(utcNow).strftime('%d') + '日'
+		#	print (str(int(strftime("%Y"))-1911)+strftime("年%m月%d日", localtime()))
+		#print(todayTime)
+		getdate, gColor, bColor = getColorToday()
+		if getdate == todayTime:
+			print ('update:%s', todayTime)
+			msgtext = ('%s，吉色：%s，忌色：%s' % (getdate, gColor, bColor))
+			push_message(msgtext)
+			#sendEmail('%s顏色建議，%s忌%s' % (getdate,gColor,bColor), '%s，吉色：%s，忌色：%s' % (getdate, gColor, bColor))
+			goGetColor = False
+			print('Cralwer stop!')
+		break
+	else:
+		sleep(60)
