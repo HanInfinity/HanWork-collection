@@ -13,3 +13,7 @@
 
 1. 進入土石流網站爬取雨量資料
 2. 將資料存入資料庫中
+
+## 資料庫成果
+
+![RainData](/DemoScreenShot/rainData.jpg)
