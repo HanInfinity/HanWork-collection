@@ -28,3 +28,13 @@ Server端執行視窗畫面
 |手機預覽畫面|Line聊天室畫面|
 |:---:|:---:|
 |![LINE預覽畫面](/DemoScreenShot/nuk-line-bot3.png)|![LINE聊天室畫面](/DemoScreenShot/nuk-line-bot4.png)|
+
+當收到警報時(共兩個範例)
+警報1
+  ![警報1](/DemoScreenShot/earthquakeAlarm.jpg)
+警報2
+  ![警報2](/DemoScreenShot/earthquakeAlarm2.jpg)
+
+|Line警報通知1|Line警報通知2|
+|:---:|:---:|
+|![LINE預覽畫面](/DemoScreenShot/LineAlarm.jpg)|![LINE聊天室畫面](/DemoScreenShot/LineAlarm2.jpg)|
