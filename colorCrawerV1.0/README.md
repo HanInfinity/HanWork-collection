@@ -1,4 +1,4 @@
-# colorCrawer
+# colorCrawler
 - 每日顏色爬蟲
 - 架設在Heroku每天固定時間執行
 - 一開始僅做寄送email動作，後來發現沒開email通知都看不到，所以加入line api
