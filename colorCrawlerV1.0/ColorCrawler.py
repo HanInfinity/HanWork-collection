@@ -54,27 +54,6 @@ def getColorToday():
 			print('忌色', bad)
 	return dateList, good, bad
 
-def sendEmail(contentText, subject):
-#	print('%s，吉色：%s，忌色：%s' % (dateList, good, bad))
-	me = 'test1223@gmail.com'
-	recipients = ['test1223@gmail.com', 'test12564@gmail.com']
-	msg = MIMEText(contentText)
-	msg['Subject'] = subject
-	msg['From'] = me
-	msg['To'] = ', '.join(recipients)
-	s = smtplib.SMTP('smtp.gmail.com', 587)
-	#s.set_debuglevel(1)
-	s.ehlo()
-	s.starttls()
-	s.ehlo()
-	s.login('htest@gmail.com', 'thepassword')
-	try:
-		s.sendmail(me, recipients, msg.as_string())
-		print ('email send successfully!')
-	except:
-		print ('Failed to send email!!')
-	s.quit()
-
 while 1:
 	utcNow = datetime.utcnow()
 	now = tpe.fromutc(utcNow).strftime("%H:%M")
